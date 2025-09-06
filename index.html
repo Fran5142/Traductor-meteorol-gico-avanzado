@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Traductor meteorológico avanzado</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+  body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 20px;
+    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color: #fff;
+    cursor: default;
+  }
+
+  h1 { text-align:center; margin-bottom:10px; font-weight:600; font-size:2.2em; text-shadow:0 2px 6px rgba(0,0,0,0.4); }
+  p { text-align:center; margin-bottom:30px; font-size:1em; color:#cfd8dc; }
+
+  .btn-top {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  button {
+    padding: 12px 28px;
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1em;
+    background-size: 200% 200%;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  #btnTraducir { background-image: linear-gradient(270deg,#0072ff,#00c6ff,#0072ff); animation: gradiente 3s ease infinite; }
+  #btnReiniciar { background-image: linear-gradient(270deg,#ff416c,#ff4b2b,#ff416c); animation: gradiente 3s ease infinite; }
+  #btnCopiar { background-image: linear-gradient(270deg,#ffa600,#ff6f00,#ffa600); animation: gradiente 3s ease infinite; }
+
+  @keyframes gradiente {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  button:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+  button:active { transform: translateY(0px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+
+  .container {
+    display:flex;
+    flex-wrap:wrap;
+    gap:20px;
+    justify-content:center;
+  }
+
+  textarea {
+    width:45%;
+    min-width:300px;
+    height:600px;
+    padding:15px;
+    font-size:16px;
+    border-radius:12px;
+    border:none;
+    resize:none;
+    color:#333;
+    background-color:#f0f4f8;
+    box-shadow:0 4px 12px rgba(0,0,0,0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor:text;
+  }
+
+  textarea:focus {
+    outline:none;
+    transform:translateY(-2px);
+    box-shadow:0 6px 18px rgba(0,0,0,0.2);
+  }
+
+  footer {
+    text-align:center;
+    margin-top:40px;
+    padding:15px 0;
+    font-size:0.9em;
+    color:#cfd8dc;
+    letter-spacing:0.5px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
+  }
+
+  @media(max-width:900px){
+    .container { flex-direction:column; align-items:center; }
+    textarea { width:90%; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Traductor meteorológico avanzado</h1>
+
+<div class="btn-top">
+  <button id="btnTraducir" onclick="traducir()">Traducir</button>
+  <button id="btnCopiar" onclick="copiarTexto()">Copiar</button>
+  <button id="btnReiniciar" onclick="reiniciar()">Reiniciar</button>
+</div>
+
+<p>Pega tu texto meteorológico en español y se traducirá automáticamente al inglés. VIS y VTO no se alteran.</p>
+
+<div class="container">
+  <textarea id="input" placeholder="Texto en español..."></textarea>
+  <textarea id="output" readonly placeholder="Texto traducido al inglés..."></textarea>
+</div>
+
+<script>
+const diccionario = {
+
+  //AVISO PARA SIGIENTES FENOMENOS
+  'AVISO DE':'SEVERE',
+  'AVISO ESPECIAL DE CONDICIONES METEOROLOGICAS':'SPECIAL WARNING OF METEOROLOGICAL CONDITIONS',
+  'EVOLUCION':'EVOLUTION',
+
+
+  //AVISO DE VIENTO FUERTE
+  'VIENTO FUERTE':'WIND STRONG',
+
+  //AVISO DE MAL TIEMPO
+  'MAL TIEMPO':'WEATHER WARNING',
+
+  //AVISO DE TEMPORAL
+  'AVISO DE TEMPORAL':'GALE STORM WARNING',
+  'TEMPORAL':'GALE',
+
+  'EN':'IN',
+  'AREA OCEANICA':'OCEANIC AREA',
+  'Y':'AND',
+  'SECTOR COSTERO':'COASTAL SECTOR',
+  'BORDE COSTERO':'COASTAL EDGE',
+  'DEL AREA':'OF AREA',
+
+  //SECTORES
+  'SECTOR PUERTO MONTT':'PUERTO MONTT AREA',
+  'ISLA BUTA CHAUQUES':'BUTA CHAUQUES ISLAND',
+  'ISLA':'ISLAND',
+  'SENO DE RELONCAVI':'BAY OF RELONCAVI',
+  'GOLFO DE ANCUD':'GULF OF ANCUD',
+  'ACCESO OCEANICO CANAL CHACAO':'OCEANIC ACCESS OF CHACAO CHANNEL',
+  'GOLFO CORCOVADO':'GULF OF CORCOVADO',
+  'ISLA DESERTORES':'DESERTORES ISLAND',
+  'ISLAS SAN PEDRO':'SAN PEDRO ISLAND',
+  'GOLFO CORONADOS':'CORONADOS GULF',
+  'GOLFO DE PENAS':'PENAS GULF',
+  'BOCA DE GUAFO':'OCEANIC ACCESS OF GUAFO',
+  'CANAL MORALEDA':'MORALEDA CHANNEL',
+  'EN AGUAS INTERIORES':'IN INLAND WATERS',
+  'EN ACCESO OCEANICO':'IN OCEANIC ACCESS',
+  'EN SECTORES ABIERTOS':'IN OPENS AREAS',
+
+  // VALIDES
+  'VALIDO':'VALID',
+  'DESDE':'FROM',
+  'HASTA':'UNTIL',
+  'A':'TO',
+  'DEL SUR':'THE SOUTH',
+
+
+  //SITUACION SINOPTICA
+
+  'SITUACION SINOPTICA':'SYNOPTIC SITUATION',
+  'PRONOSTICO':'FORECAST', 
+  'MARGEN ANTICICLONICO':'ANTICYCLONIC EDGE', 
+  'ANTICICLONICO':'ANTICYCLONIC', 
+  'LIGERA INESTABILIDAD':'LIGHT UNSTABILITY', 
+  'INESTABLE':'UNSTABLE',
+  'POSTFRONTAL':'POSTFRONTAL',
+  'SISTEMA FRONTAL':'FRONTAL SYSTEM',
+  'PASO FRONTAL':'FRONTAL STEP',
+  'NUEVO PASO FRONTAL':'NEW FRONTAL STEP',
+  'INESTABILIDAD POSTFRONTAL':'POSTFRONTAL UNSTABILITY',
+
+  'DESPLAZAMIENTO GENERAL':'GENERAL DISPLACEMENT',
+  'ASOCIADO':'ASSOCIATED',
+  'BAJA PRESION':'LOW PRESSURE',
+  'ALTA PRESION':'HING PRESSURE',
+  'UBICACION':'LOCATION',
+  'ANALISIS':'ANALYSIS',
+
+  'CON':'WITH', 
+
+  //ESTADO DEL CIELO
+
+  'CUBIERTO':'OVERCAST',
+  'NUBLADO':'BROKER',
+  'PARCIAL':'SCATTERED',
+  'DESPEJADO':'CLEAR',
+
+  //VISIBILIDAD
+  'VISIBILIDAD':'VIS',
+  'MUY MALA':'VERY POOR',
+  'MALA':'POOR',
+  'REGULAR':'AVERAGE',
+  'BUENA':'GOOD',
+
+  //VIENTO
+  'VTO':'WIND',
+  'VIENTO':'WIND',
+  'NUDOS':'NDS',
+  'ROLANDO':'ROTATING',
+  'RACHAS':'GUST',
+  'AUMENTANDO':'INCREASING',
+  'DISMINUYENDO':'DECREASING',
+  'VARIANDO':'BECOMING',
+  'OCASIONAL':'OCCASIONAL',
+
+
+  //FENOMENOS
+  'OCASIONALES':'OCCASIONAL',
+  'CHUBASCOS':'SHOWERS',
+  'GRANIZOS':'HAIL',
+  'PRECIPITACIONES':'PRECIPITATION',
+  'LLOVIZNA':'DRIZZLE',
+  'NIEBLA':'FOG',
+  'NEBLINA':'MIST',
+  'NIEVE':'SNOW',
+  'AGUA NIEVE':'SLEET',
+
+
+  //MAR
+  'MAR':'SEA',
+  'CALMA':'CALM',
+  'LLANA':'SMOOTH',
+  'RIZADA':'RIPPLED',
+  'MAREJADILLA':'SLIGHT',
+  'MAREJADA':'MODERATE',
+  'GRUESA':'ROUGH',
+  'MUY':'VERY',
+  'ALBOLADA':'HIGH',
+  'ALBOLADA ALTA':'VERY HIGH',
+  'MT':'M',
+  'COMO':'AS',
+  'DE FONDO':'SWELL',
+  'EN':'IN',
+  'BAHIA':'BAY',
+
+
+
+  //MAXIMAS
+  'TEMPERATURA':'TEMPERATURE',
+  'MINIMA':'MINIMUM',
+  'MAXIMA':'MAXIMUM',
+  'INDICE':'INDEX',
+  'RADIACION':'RADIATION',
+  'ULTRAVIOLETA':'ULTRAVIOLET',
+
+  'BAJO':'LOW',
+  'MODERADO':'MODERATE',
+  'ALTO':'HIGH',
+  'MUY ALTO':'VERY HIGH',
+  'EXTREMO':'EXTREME',
+  'FUENTE':'SOURCE',
+  'DMC':'DMC',
+  'NDS':'KT',
+
+
+  'CENTRO METEOROLOGICO MARITIMO DE PUERTO MONTT':'MARITIME METEOROLOGICAL CENTER OF PUERTO MONTT',
+  'LOS':'THE',
+  'EVENTUALES':'POSSIBLE',
+  'CAMBIOS':'CHANGES',
+  'LAS':'THE',
+  'CONDICIONES':'CONDITIONS',
+  'PREVISTAS':'FORECASTED',
+  'SE INFORMARAN':'WILL BE REPORTED',
+  'OPORTUNAMENTE':'TIMELY',
+
+  // PUNTO E EMISION
+  'EMITIDO':'ISSUED BY', 
+  'HORA LOCAL':'LOCAL TIME', 
+  'POR':'BY',
+  'EL':'THE',
+
+  // MESES DE AÑO
+  'ENERO':'JANUARY',
+  'FEBRERO':'FEBRUARY',
+  'MARZO':'MARCH',
+  'ABRIL':'APRIL',
+  'MAYO':'MAY',
+  'JUNIO':'JUNE',
+  'JULIO':'JULY',
+  'AGOSTO':'AUGUST',
+  'SEPTIEMBRE':'SEPTEMBER',
+  'OCTUBRE':'OCTOBER',
+  'NOVIEMBRE':'NOVEMBER',
+  'DICIEMBRE':'DECEMBER',
+
+  'ESPAÑOL':'INGLES',
+};
+
+const dias = ['LUNES','MARTES','MIERCOLES','JUEVES','VIERNES','SABADO','DOMINGO'];
+const reemplazos = { 'N':'NORTH','S':'SOUTH','E':'EAST','W':'WEST','NE':'NORTHEAST','SE':'SOUTHEAST','NW':'NORTHWEST','SW':'SOUTHWEST' };
+
+function traducir(){
+    let texto = document.getElementById('input').value.toUpperCase();
+
+    // Quitar acentos
+    texto = texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+    // Diccionario
+    Object.keys(diccionario).forEach(key=>{
+        texto = texto.replace(new RegExp('\\b'+key+'\\b','gi'), diccionario[key]);
+    });
+
+    // Proteger abreviaturas con '/'
+    const regexCompuestas = /\b(N|S|E|W|NE|NW|SE|SW)\/(N|S|E|W|NE|NW|SE|SW)\b/gi;
+    const protecciones = [];
+    texto = texto.replace(regexCompuestas, match=>{
+        protecciones.push(match);
+        return `@@PROTEGIDO${protecciones.length-1}@@`;
+    });
+
+    // Reemplazos simples
+    Object.keys(reemplazos).forEach(abrev=>{
+        texto = texto.replace(new RegExp(`\\b${abrev}\\b`, 'g'), reemplazos[abrev]);
+    });
+
+    // Restaurar compuestas
+    protecciones.forEach((val,i)=>{
+        texto = texto.replace(`@@PROTEGIDO${i}@@`, val.toUpperCase());
+    });
+
+    // Días con fecha
+    dias.forEach(dia=>{
+        texto = texto.replace(new RegExp(`\\b${dia}\\b\\s*(\\d{1,2})`,'gi'), (m,n)=>`${translateDia(dia)} ${n}.`);
+    });
+
+    // Limpieza de espacios y signos
+    texto = texto.replace(/ {2,}/g,' ')
+                 .replace(/ \//g,'/')
+                 .replace(/\/ /g,'/')
+                 .replace(/ °/g,'°')
+                 .replace(/° /g,'°')
+                 .replace(/ ,/g,',')
+                 .replace(/ :/g,':')
+                 .replace(/\( /g,'(')
+                 .replace(/ \)/g,')');
+
+    // Reducir múltiples líneas vacías
+    texto = texto.replace(/\n{2,}/g, '\n\n');
+
+    // Quitar espacios al inicio y final de cada línea
+    texto = texto.split('\n').map(line => line.trim()).join('\n');
+
+    document.getElementById('output').value = texto;
+}
+
+function translateDia(dia){
+  const diasEng = {
+    'LUNES':'MONDAY',
+    'MARTES':'TUESDAY',
+    'MIERCOLES':'WEDNESDAY',
+    'JUEVES':'THURSDAY',
+    'VIERNES':'FRIDAY',
+    'SABADO':'SATURDAY',
+    'DOMINGO':'SUNDAY'
+  };
+  return diasEng[dia.toUpperCase()] || dia;
+}
+
+function reiniciar(){ 
+  document.getElementById('input').value=''; 
+  document.getElementById('output').value=''; 
+}
+
+function copiarTexto(){ 
+  const output=document.getElementById('output'); 
+  output.select(); 
+  output.setSelectionRange(0,99999); 
+  navigator.clipboard.writeText(output.value)
+    .then(()=>alert('Texto copiado al portapapeles ✅'))
+    .catch(()=>alert('Error al copiar el texto ❌')); 
+}
+</script>
+
+<footer style="text-align:center;margin-top:40px;color:#cfd8dc;font-weight:600;">
+<div style="width:100%;height:1px;background:linear-gradient(90deg,transparent,#00c6ff,transparent);margin-bottom:10px;"></div>
+CREADO POR CABO 2º (MET.) FRANCISCO SALAS MUÑOZ
+</footer>
+
+</body>
+</html>
