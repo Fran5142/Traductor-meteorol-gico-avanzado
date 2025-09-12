@@ -113,7 +113,7 @@
   <button id="btnReiniciar" onclick="reiniciar()">Reiniciar</button>
 </div>
 
-<p>Pega tu texto meteorológico en español y se traducirá automáticamente al inglés. VIS y VTO no se alteran.</p>
+<p>Pega tu texto Meteorológico en español y se traducirá automáticamente al inglés avanzado.</p>
 
 <div class="container">
   <textarea id="input" placeholder="Texto en español..."></textarea>
@@ -121,243 +121,138 @@
 </div>
 
 <script>
+// 🔹 Aquí defines frases completas con traducción especial
+const reglasEspeciales = {
+
+  // 👉 Puedes seguir agregando: "TEXTO EN ESPAÑOL":"TRADUCCION EN INGLES"
+
+  "AVISO DE":"SEVERE",
+  "AVISO ESPECIAL DE CONDICIONES METEOROLOGICAS":"SPECIAL WARNING OF METEOROLOGICAL CONDITIONS",
+  "EVOLUCION":"EVOLUTION",
+  "VIENTO FUERTE":"STRONG WIND",
+  "MAL TIEMPO":"WEATHER WARNING",
+  "AVISO DE TEMPORAL":"GALE STORM WARNING",
+  "TEMPORAL":"GALE",
+  "UBICADO EN":"LOCATION IN",
+  "LATITUD":"LATITUDE",
+  "LONGITUD":"LONGITUDE",
+  "SECTOR PUERTO MONTT":"PUERTO MONTT AREA",
+  "ISLA BUTA CHAUQUES":"BUTA CHAUQUES ISLAND",
+  "ISLA":"ISLAND",
+  "SENO DE RELONCAVI":"BAY OF RELONCAVI",
+  "GOLFO DE ANCUD":"GULF OF ANCUD",
+  "ACCESO OCEANICO CANAL CHACAO":"OCEANIC ACCESS OF CHACAO CHANNEL",
+  "GOLFO CORCOVADO":"GULF OF CORCOVADO",
+  "ISLA DESERTORES":"DESERTORES ISLAND",
+  "ISLAS SAN PEDRO":"SAN PEDRO ISLAND",
+  "GOLFO CORONADOS":"CORONADOS GULF",
+  "GOLFO DE PENAS":"PENAS GULF",
+  "BOCA DE GUAFO":"OCEANIC ACCESS OF GUAFO",
+  "CANAL MORALEDA":"MORALEDA CHANNEL",
+  "EN AGUAS INTERIORES":"IN INLAND WATERS",
+  "EN ACCESO OCEANICO":"IN OCEANIC ACCESS",
+  "EN SECTORES ABIERTOS":"IN OPEN AREAS",
+  "A.-":"A.-",
+  "LOS EVENTUALES CAMBIOS A LAS CONDICIONES PREVISTAS SE INFORMARAN OPORTUNAMENTE":"THE POSSIBLE CHANGES TO THE CONDITIONS FORECASTED WILL BE REPORTED TIMELY",
+  "POR EL CENTRO METEOROLOGICO MARITIMO DE PUERTO MONTT":"BY THE MARITIME METEOROLOGICAL CENTER OF PUERTO MONTT",
+  "CON DESPLAZAMIENTO GENERAL":"WITH GENERAL DISPLACEMENT",
+  "CENTRO DE BAJA PRESION DE": "LOW PRESSURE OF",
+  "CENTRO DE ALTA PRESION DE": "HIGH PRESSURE OF",
+  "ALBOLADA ALTA":"VERY HIGH",
+  "A LAS":"TO THE",
+  "A":"TO",
+
+  "NORTE": "NORTH",
+  "SUR": "SOUTH",
+  "ESTE": "EAST",
+  "WESTE": "WEST",
+  "NORESTE": "NORTHEAST",
+  "SURESTE": "SOUTHEAST",
+  "NORWESTE": "NORTHWEST",
+  "SURESTE": "SOUTHWEST"
+
+
+};
+
+// 🔹 Diccionario general (traducciones palabra por palabra)
 const diccionario = {
 
-  //AVISO PARA SIGIENTES FENOMENOS
-  'AVISO DE':'SEVERE',
-  'AVISO ESPECIAL DE CONDICIONES METEOROLOGICAS':'SPECIAL WARNING OF METEOROLOGICAL CONDITIONS',
-  'EVOLUCION':'EVOLUTION',
 
-
-  //AVISO DE VIENTO FUERTE
-  'VIENTO FUERTE':'WIND STRONG',
-
-  //AVISO DE MAL TIEMPO
-  'MAL TIEMPO':'WEATHER WARNING',
-
-  //AVISO DE TEMPORAL
-  'AVISO DE TEMPORAL':'GALE STORM WARNING',
-  'TEMPORAL':'GALE',
-
-  'EN':'IN',
-  'AREA OCEANICA':'OCEANIC AREA',
-  'Y':'AND',
-  'SECTOR COSTERO':'COASTAL SECTOR',
-  'BORDE COSTERO':'COASTAL EDGE',
-  'DEL AREA':'OF AREA',
-
-  //SECTORES
-  'SECTOR PUERTO MONTT':'PUERTO MONTT AREA',
-  'ISLA BUTA CHAUQUES':'BUTA CHAUQUES ISLAND',
-  'ISLA':'ISLAND',
-  'SENO DE RELONCAVI':'BAY OF RELONCAVI',
-  'GOLFO DE ANCUD':'GULF OF ANCUD',
-  'ACCESO OCEANICO CANAL CHACAO':'OCEANIC ACCESS OF CHACAO CHANNEL',
-  'GOLFO CORCOVADO':'GULF OF CORCOVADO',
-  'ISLA DESERTORES':'DESERTORES ISLAND',
-  'ISLAS SAN PEDRO':'SAN PEDRO ISLAND',
-  'GOLFO CORONADOS':'CORONADOS GULF',
-  'GOLFO DE PENAS':'PENAS GULF',
-  'BOCA DE GUAFO':'OCEANIC ACCESS OF GUAFO',
-  'CANAL MORALEDA':'MORALEDA CHANNEL',
-  'EN AGUAS INTERIORES':'IN INLAND WATERS',
-  'EN ACCESO OCEANICO':'IN OCEANIC ACCESS',
-  'EN SECTORES ABIERTOS':'IN OPENS AREAS',
-
-  // VALIDES
-  'VALIDO':'VALID',
-  'DESDE':'FROM',
-  'HASTA':'UNTIL',
-  'A':'TO',
-  'DEL SUR':'THE SOUTH',
-
-
-  //SITUACION SINOPTICA
-
-  'SITUACION SINOPTICA':'SYNOPTIC SITUATION',
-  'PRONOSTICO':'FORECAST', 
-  'MARGEN ANTICICLONICO':'ANTICYCLONIC EDGE', 
-  'ANTICICLONICO':'ANTICYCLONIC', 
-  'LIGERA INESTABILIDAD':'LIGHT UNSTABILITY', 
-  'INESTABLE':'UNSTABLE',
-  'POSTFRONTAL':'POSTFRONTAL',
-  'SISTEMA FRONTAL':'FRONTAL SYSTEM',
-  'PASO FRONTAL':'FRONTAL STEP',
-  'NUEVO PASO FRONTAL':'NEW FRONTAL STEP',
-  'INESTABILIDAD POSTFRONTAL':'POSTFRONTAL UNSTABILITY',
-
-  'DESPLAZAMIENTO GENERAL':'GENERAL DISPLACEMENT',
-  'ASOCIADO':'ASSOCIATED',
-  'BAJA PRESION':'LOW PRESSURE',
-  'ALTA PRESION':'HING PRESSURE',
-  'UBICACION':'LOCATION',
-  'ANALISIS':'ANALYSIS',
-
-  'CON':'WITH', 
-
-  //ESTADO DEL CIELO
-
-  'CUBIERTO':'OVERCAST',
-  'NUBLADO':'BROKER',
-  'PARCIAL':'SCATTERED',
-  'DESPEJADO':'CLEAR',
-
-  //VISIBILIDAD
-  'VISIBILIDAD':'VIS',
-  'MUY MALA':'VERY POOR',
-  'MALA':'POOR',
-  'REGULAR':'AVERAGE',
-  'BUENA':'GOOD',
-
-  //VIENTO
-  'VTO':'WIND',
-  'VIENTO':'WIND',
-  'NUDOS':'NDS',
-  'ROLANDO':'ROTATING',
-  'RACHAS':'GUST',
-  'AUMENTANDO':'INCREASING',
-  'DISMINUYENDO':'DECREASING',
-  'VARIANDO':'BECOMING',
-  'OCASIONAL':'OCCASIONAL',
-
-
-  //FENOMENOS
-  'OCASIONALES':'OCCASIONAL',
-  'CHUBASCOS':'SHOWERS',
-  'GRANIZOS':'HAIL',
-  'PRECIPITACIONES':'PRECIPITATION',
-  'LLOVIZNA':'DRIZZLE',
-  'NIEBLA':'FOG',
-  'NEBLINA':'MIST',
-  'NIEVE':'SNOW',
-  'AGUA NIEVE':'SLEET',
-
-
-  //MAR
-  'MAR':'SEA',
-  'CALMA':'CALM',
-  'LLANA':'SMOOTH',
-  'RIZADA':'RIPPLED',
-  'MAREJADILLA':'SLIGHT',
-  'MAREJADA':'MODERATE',
-  'GRUESA':'ROUGH',
-  'MUY':'VERY',
-  'ALBOLADA':'HIGH',
-  'ALBOLADA ALTA':'VERY HIGH',
-  'MT':'M',
-  'COMO':'AS',
-  'DE FONDO':'SWELL',
-  'EN':'IN',
-  'BAHIA':'BAY',
-
-
-
-  //MAXIMAS
-  'TEMPERATURA':'TEMPERATURE',
-  'MINIMA':'MINIMUM',
-  'MAXIMA':'MAXIMUM',
-  'INDICE':'INDEX',
-  'RADIACION':'RADIATION',
-  'ULTRAVIOLETA':'ULTRAVIOLET',
-
-  'BAJO':'LOW',
-  'MODERADO':'MODERATE',
-  'ALTO':'HIGH',
-  'MUY ALTO':'VERY HIGH',
-  'EXTREMO':'EXTREME',
-  'FUENTE':'SOURCE',
-  'DMC':'DMC',
-  'NDS':'KT',
-
-
-  'CENTRO METEOROLOGICO MARITIMO DE PUERTO MONTT':'MARITIME METEOROLOGICAL CENTER OF PUERTO MONTT',
-  'LOS':'THE',
-  'EVENTUALES':'POSSIBLE',
-  'CAMBIOS':'CHANGES',
-  'LAS':'THE',
-  'CONDICIONES':'CONDITIONS',
-  'PREVISTAS':'FORECASTED',
-  'SE INFORMARAN':'WILL BE REPORTED',
-  'OPORTUNAMENTE':'TIMELY',
-
-  // PUNTO E EMISION
-  'EMITIDO':'ISSUED BY', 
-  'HORA LOCAL':'LOCAL TIME', 
-  'POR':'BY',
-  'EL':'THE',
-
-  // MESES DE AÑO
-  'ENERO':'JANUARY',
-  'FEBRERO':'FEBRUARY',
-  'MARZO':'MARCH',
-  'ABRIL':'APRIL',
-  'MAYO':'MAY',
-  'JUNIO':'JUNE',
-  'JULIO':'JULY',
-  'AGOSTO':'AUGUST',
-  'SEPTIEMBRE':'SEPTEMBER',
-  'OCTUBRE':'OCTOBER',
-  'NOVIEMBRE':'NOVEMBER',
-  'DICIEMBRE':'DECEMBER',
-
-  'ESPAÑOL':'INGLES',
+ 'VALIDO':'VALID',
+ 'DESDE':'FROM',
+ 'HASTA':'TO',
+ 'DEL SUR':'THE SOUTH',
+ 'SITUACION SINOPTICA':'SYNOPTIC SITUATION',
+ 'PRONOSTICO':'FORECAST', 
+ 'MARGEN ANTICICLONICO':'ANTICYCLONIC EDGE', 
+ 'ANTICICLONICO':'ANTICYCLONIC', 
+ 'LIGERA INESTABILIDAD':'LIGHT UNSTABILITY', 
+ 'INESTABLE':'UNSTABLE',
+ 'POSTFRONTAL':'POSTFRONTAL',
+ 'SISTEMA FRONTAL':'FRONTAL SYSTEM',
+ 'PASO FRONTAL':'FRONTAL STEP',
+ 'NUEVO PASO FRONTAL':'NEW FRONTAL STEP',
+ 'INESTABILIDAD POSTFRONTAL':'POSTFRONTAL UNSTABILITY',
+ 'DESPLAZAMIENTO GENERAL':'GENERAL DISPLACEMENT',
+ 'ASOCIADO':'ASSOCIATED',
+ 'UBICACION':'LOCATION',
+ 'ANALISIS':'ANALYSIS',
+ 'CUBIERTO':'OVERCAST',
+ 'NUBLADO':'BROKEN',
+ 'PARCIAL':'SCATTERED',
+ 'DESPEJADO':'CLEAR',
+ 'COBIERTO':'OVERCAST',
+ 'NOBLADO':'BROKEN',
+ 'PERCIAL':'SCATTERED',
+ 'DASPEJDO':'CLEAR',
+ 'VISIBILIDAD':'VIS',
+ 'MUY MALA':'VERY POOR',
+ 'MALA':'POOR',
+ 'REGULAR':'AVERAGE',
+ 'BUENA':'GOOD',
+ 'VTO':'WIND',
+ 'VIENTO':'WIND',
+ 'NUDOS':'KT',
+ 'ROLANDO':'ROTATING',
+ 'RACHAS':'GUST',
+ 'AUMENTANDO':'INCREASING',
+ 'DISMINUYENDO':'DECREASING',
+ 'VARIANDO':'BECOMING',
+ 'OCASIONAL':'OCCASIONAL',
+ 'OCASIONALES':'OCCASIONAL',
+ 'CHUBASCOS':'SHOWERS',
+ 'GRANIZOS':'HAIL',
+ 'PRECIPITACIONES':'PRECIPITATION',
+ 'LLOVIZNA':'DRIZZLE',
+ 'NIEBLA':'FOG',
+ 'NEBLINA':'MIST',
+ 'NIEVE':'SNOW',
+ 'AGUA NIEVE':'SLEET',
+ 'MAR':'SEA',
+ 'CALMA':'CALM',
+ 'LLANA':'SMOOTH',
+ 'RIZADA':'RIPPLED',
+ 'MAREJADILLA':'SLIGHT',
+ 'MAREJADA':'MODERATE',
+ 'GRUESA':'ROUGH',
+ 'MUY':'VERY',
+ 'ALBOLADA':'HIGH',
+ 'COMO':'AS',
+ 'DE FONDO':'SWELL',
+ 'EN':'IN',
+ 'BAHIA':'BAY',
+ 'HORA LOCAL':'LOCAL TIME', 
+ 'EMITIDO':'ISSUE',
 };
 
 const dias = ['LUNES','MARTES','MIERCOLES','JUEVES','VIERNES','SABADO','DOMINGO'];
 const reemplazos = { 'N':'NORTH','S':'SOUTH','E':'EAST','W':'WEST','NE':'NORTHEAST','SE':'SOUTHEAST','NW':'NORTHWEST','SW':'SOUTHWEST' };
 
-function traducir(){
-    let texto = document.getElementById('input').value.toUpperCase();
-
-    // Quitar acentos
-    texto = texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-
-    // Diccionario
-    Object.keys(diccionario).forEach(key=>{
-        texto = texto.replace(new RegExp('\\b'+key+'\\b','gi'), diccionario[key]);
-    });
-
-    // Proteger abreviaturas con '/'
-    const regexCompuestas = /\b(N|S|E|W|NE|NW|SE|SW)\/(N|S|E|W|NE|NW|SE|SW)\b/gi;
-    const protecciones = [];
-    texto = texto.replace(regexCompuestas, match=>{
-        protecciones.push(match);
-        return `@@PROTEGIDO${protecciones.length-1}@@`;
-    });
-
-    // Reemplazos simples
-    Object.keys(reemplazos).forEach(abrev=>{
-        texto = texto.replace(new RegExp(`\\b${abrev}\\b`, 'g'), reemplazos[abrev]);
-    });
-
-    // Restaurar compuestas
-    protecciones.forEach((val,i)=>{
-        texto = texto.replace(`@@PROTEGIDO${i}@@`, val.toUpperCase());
-    });
-
-    // Días con fecha
-    dias.forEach(dia=>{
-        texto = texto.replace(new RegExp(`\\b${dia}\\b\\s*(\\d{1,2})`,'gi'), (m,n)=>`${translateDia(dia)} ${n}.`);
-    });
-
-    // Limpieza de espacios y signos
-    texto = texto.replace(/ {2,}/g,' ')
-                 .replace(/ \//g,'/')
-                 .replace(/\/ /g,'/')
-                 .replace(/ °/g,'°')
-                 .replace(/° /g,'°')
-                 .replace(/ ,/g,',')
-                 .replace(/ :/g,':')
-                 .replace(/\( /g,'(')
-                 .replace(/ \)/g,')');
-
-    // Reducir múltiples líneas vacías
-    texto = texto.replace(/\n{2,}/g, '\n\n');
-
-    // Quitar espacios al inicio y final de cada línea
-    texto = texto.split('\n').map(line => line.trim()).join('\n');
-
-    document.getElementById('output').value = texto;
+function aplicarReglasEspeciales(texto){
+  Object.keys(reglasEspeciales).forEach(key=>{
+    texto = texto.replace(new RegExp("\\b"+key+"\\b","gi"), reglasEspeciales[key]);
+  });
+  return texto;
 }
 
 function translateDia(dia){
@@ -371,6 +266,57 @@ function translateDia(dia){
     'DOMINGO':'SUNDAY'
   };
   return diasEng[dia.toUpperCase()] || dia;
+}
+
+function traducir(){
+    let texto = document.getElementById('input').value.toUpperCase();
+    texto = texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+    // Proteger abreviaturas con '/'
+    const regexCompuestas = /\b(N|S|E|W|NE|NW|SE|SW)\/(N|S|E|W|NE|NW|SE|SW)\b/gi;
+    const protecciones = [];
+    texto = texto.replace(regexCompuestas, match=>{
+        protecciones.push(match);
+        return `@@PROTEGIDO${protecciones.length-1}@@`;
+    });
+
+    // Aplicar reglas especiales
+    texto = aplicarReglasEspeciales(texto);
+
+    // Diccionario general
+    Object.keys(diccionario).forEach(key=>{
+        texto = texto.replace(new RegExp("\\b"+key+"\\b","gi"), diccionario[key]);
+    });
+
+    // Reemplazos simples
+    Object.keys(reemplazos).forEach(abrev=>{
+        texto = texto.replace(new RegExp(`\\b${abrev}\\b`, 'g'), reemplazos[abrev]);
+    });
+
+    // Restaurar abreviaturas compuestas
+    protecciones.forEach((val,i)=>{
+        texto = texto.replace(`@@PROTEGIDO${i}@@`, val.toUpperCase());
+    });
+
+    // Traducir días con número
+    dias.forEach(dia=>{
+        texto = texto.replace(new RegExp(`\\b${dia}\\b\\s*(\\d{1,2})`,'gi'), (m,n)=>`${translateDia(dia)} ${n}.`);
+    });
+
+    // Limpieza de espacios y signos
+    texto = texto.replace(/ {2,}/g,' ')
+                 .replace(/ \//g,'/')
+                 .replace(/\/ /g,'/')
+                 .replace(/ °/g,'°')
+                 .replace(/° /g,'°')
+                 .replace(/ ,/g,',')
+                 .replace(/ :/g,':')
+                 .replace(/\( /g,'(')
+                 .replace(/ \)/g,')')
+                 .replace(/\n{2,}/g, '\n\n')
+                 .split('\n').map(line => line.trim()).join('\n');
+
+    document.getElementById('output').value = texto;
 }
 
 function reiniciar(){ 
