@@ -105,7 +105,7 @@
 </head>
 <body>
 
-<h1>Traductor meteorológico avanzado</h1>
+<h1>TRADUCTOR METEOROLÓGICO AVANZADO</h1>
 
 <div class="btn-top">
   <button id="btnTraducir" onclick="traducir()">Traducir</button>
@@ -113,7 +113,7 @@
   <button id="btnReiniciar" onclick="reiniciar()">Reiniciar</button>
 </div>
 
-<p>Pega tu texto Meteorológico en español y se traducirá automáticamente al inglés avanzado.</p>
+<p>Pega tu texto Avisos Meteorológico en español y se traducirá automáticamente al inglés avanzado.</p>
 
 <div class="container">
   <textarea id="input" placeholder="Texto en español..."></textarea>
@@ -162,6 +162,10 @@ const reglasEspeciales = {
   "ALBOLADA ALTA":"VERY HIGH",
   "A LAS":"TO THE",
   "A":"TO",
+  "SECTOR OCEANICO":"OCEANIC AREA",
+  "EN AREA OCEANICA":"IN OCEANIC AREA",
+  "TRANSITORIAMENTE":"TEMPO",
+
 
   "NORTE": "NORTH",
   "SUR": "SOUTH",
@@ -214,6 +218,7 @@ const diccionario = {
  'VTO':'WIND',
  'VIENTO':'WIND',
  'NUDOS':'KT',
+ 'NDS':'KT',
  'ROLANDO':'ROTATING',
  'RACHAS':'GUST',
  'AUMENTANDO':'INCREASING',
@@ -273,13 +278,16 @@ function traducir(){
     let texto = document.getElementById('input').value.toUpperCase();
     texto = texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-    // Proteger abreviaturas con '/'
+    // 🔹 Proteger abreviaturas con '/'
     const regexCompuestas = /\b(N|S|E|W|NE|NW|SE|SW)\/(N|S|E|W|NE|NW|SE|SW)\b/gi;
     const protecciones = [];
     texto = texto.replace(regexCompuestas, match=>{
         protecciones.push(match);
         return `@@PROTEGIDO${protecciones.length-1}@@`;
     });
+
+    // 🔹 Proteger "A.-" para que no se traduzca como TO
+    texto = texto.replace(/\bA\.-/g, "@@PROTEGIDO_A@@");
 
     // Aplicar reglas especiales
     texto = aplicarReglasEspeciales(texto);
@@ -298,6 +306,9 @@ function traducir(){
     protecciones.forEach((val,i)=>{
         texto = texto.replace(`@@PROTEGIDO${i}@@`, val.toUpperCase());
     });
+
+    // 🔹 Restaurar "A.-"
+    texto = texto.replace(/@@PROTEGIDO_A@@/g, "A.-");
 
     // Traducir días con número
     dias.forEach(dia=>{
