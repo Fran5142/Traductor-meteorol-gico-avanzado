@@ -10,180 +10,143 @@
   body {
     font-family: 'Inter', sans-serif;
     margin: 0;
-    padding: 0;
+    padding: 20px;
     background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
     color: #fff;
     cursor: default;
   }
 
+  /* PANTALLA DE LOGIN */
+  #loginScreen {
+    position: fixed;
+    top:0; left:0; width:100%; height:100%;
+    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    display:flex; flex-direction:column; justify-content:center; align-items:center;
+    z-index:1000;
+  }
+
+  #loginScreen h2 {
+    margin-bottom:20px;
+    font-size:2em;
+    text-shadow:0 2px 6px rgba(0,0,0,0.4);
+  }
+
+  #loginScreen input {
+    padding:12px 20px;
+    margin:8px 0;
+    border:none;
+    border-radius:12px;
+    width:250px;
+    font-size:1em;
+    outline:none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  #loginScreen input:focus {
+    transform: translateY(-2px);
+    box-shadow:0 6px 18px rgba(0,0,0,0.2);
+  }
+
+  #loginScreen button {
+    padding:12px 28px;
+    border:none;
+    border-radius:12px;
+    color:#fff;
+    font-weight:600;
+    font-size:1em;
+    background-size:200% 200%;
+    margin-top:12px;
+    cursor:pointer;
+    box-shadow:0 4px 12px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    background-image: linear-gradient(270deg,#0072ff,#00c6ff,#0072ff);
+    animation: gradiente 3s ease infinite;
+  }
+
+  #loginScreen button:hover { transform: translateY(-3px); box-shadow:0 8px 20px rgba(0,0,0,0.3); }
+  #loginScreen button:active { transform: translateY(0px); box-shadow:0 4px 12px rgba(0,0,0,0.2); }
+
+  @keyframes gradiente {
+    0% { background-position:0% 50%; }
+    50% { background-position:100% 50%; }
+    100% { background-position:0% 50%; }
+  }
+
+  /* Resto del estilo original */
   h1 { text-align:center; margin-bottom:10px; font-weight:600; font-size:2.2em; text-shadow:0 2px 6px rgba(0,0,0,0.4); }
   p { text-align:center; margin-bottom:30px; font-size:1em; color:#cfd8dc; }
 
-  .btn-top {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-bottom: 20px;
-  }
-
-  button {
-    padding: 12px 28px;
-    border: none;
-    border-radius: 12px;
-    color: #fff;
-    font-weight: 600;
-    font-size: 1em;
-    background-size: 200% 200%;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-  }
-
+  .btn-top { display:flex; justify-content:center; flex-wrap:wrap; gap:12px; margin-bottom:20px; }
+  button { padding:12px 28px; border:none; border-radius:12px; color:#fff; font-weight:600; font-size:1em; background-size:200% 200%; transition: all 0.3s ease; box-shadow:0 4px 12px rgba(0,0,0,0.2); position: relative; overflow: hidden; cursor: pointer; }
   #btnTraducir { background-image: linear-gradient(270deg,#0072ff,#00c6ff,#0072ff); animation: gradiente 3s ease infinite; }
   #btnReiniciar { background-image: linear-gradient(270deg,#ff416c,#ff4b2b,#ff416c); animation: gradiente 3s ease infinite; }
   #btnCopiar { background-image: linear-gradient(270deg,#ffa600,#ff6f00,#ffa600); animation: gradiente 3s ease infinite; }
 
-  @keyframes gradiente {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-
   button:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
   button:active { transform: translateY(0px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
 
-  .container {
-    display:flex;
-    flex-wrap:wrap;
-    gap:20px;
-    justify-content:center;
-  }
+  .container { display:flex; flex-wrap:wrap; gap:20px; justify-content:center; }
 
-  textarea {
-    width:45%;
-    min-width:300px;
-    height:600px;
-    padding:15px;
-    font-size:16px;
-    border-radius:12px;
-    border:none;
-    resize:none;
-    color:#333;
-    background-color:#f0f4f8;
-    box-shadow:0 4px 12px rgba(0,0,0,0.15);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    cursor:text;
-  }
+  textarea { width:45%; min-width:300px; height:600px; padding:15px; font-size:16px; border-radius:12px; border:none; resize:none; color:#333; background-color:#f0f4f8; box-shadow:0 4px 12px rgba(0,0,0,0.15); transition: transform 0.2s ease, box-shadow 0.2s ease; cursor:text; }
 
-  textarea:focus {
-    outline:none;
-    transform:translateY(-2px);
-    box-shadow:0 6px 18px rgba(0,0,0,0.2);
-  }
+  textarea:focus { outline:none; transform:translateY(-2px); box-shadow:0 6px 18px rgba(0,0,0,0.2); }
 
-  footer {
-    text-align:center;
-    margin-top:40px;
-    padding:15px 0;
-    font-size:0.9em;
-    color:#cfd8dc;
-    letter-spacing:0.5px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:6px;
-  }
+  footer { text-align:center; margin-top:40px; padding:15px 0; font-size:0.9em; color:#cfd8dc; letter-spacing:0.5px; display:flex; flex-direction:column; align-items:center; gap:6px; }
 
-  @media(max-width:900px){
-    .container { flex-direction:column; align-items:center; }
-    textarea { width:90%; }
-  }
-
-  /* 🔐 Login personalizado */
-  #login {
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    height:100vh;
-    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-    color:#fff;
-  }
-
-  #login input {
-    padding:10px;
-    margin:5px;
-    border-radius:8px;
-    border:none;
-    width:200px;
-    text-align:center;
-  }
-
-  #login button {
-    padding:10px 20px;
-    margin-top:10px;
-    border:none;
-    border-radius:8px;
-    background:#00c6ff;
-    color:#000;
-    font-weight:bold;
-    cursor:pointer;
-  }
-
-  #errorLogin { color:#ff4b2b; margin-top:10px; display:none; }
+  @media(max-width:900px){ .container { flex-direction:column; align-items:center; } textarea { width:90%; } }
 </style>
 </head>
 <body>
 
-<!-- 🔐 Pantalla de login -->
-<div id="login">
-  <h2>Iniciar Sesión</h2>
-  <input type="text" id="usuarioInput" placeholder="Usuario">
-  <input type="password" id="claveInput" placeholder="Contraseña">
-  <button onclick="verificarLogin()">Entrar</button>
-  <p id="errorLogin">Usuario o contraseña incorrectos</p>
+<!-- LOGIN -->
+<div id="loginScreen">
+  <h2>Ingreso Traductor Meteorológico</h2>
+  <input type="text" id="usuario" placeholder="Usuario">
+  <input type="password" id="clave" placeholder="Contraseña">
+  <button onclick="verificarLogin()">Ingresar</button>
 </div>
 
-<!-- 🔓 Contenido principal -->
-<div id="app" style="display:none;">
-<h1>TRADUCTOR METEOROLÓGICO AVANZADO</h1>
+<!-- CONTENIDO PRINCIPAL -->
+<div id="mainContent" style="display:none;">
+  <h1>TRADUCTOR METEOROLÓGICO AVANZADO</h1>
 
-<div class="btn-top">
-  <button id="btnTraducir" onclick="traducir()">Traducir</button>
-  <button id="btnCopiar" onclick="copiarTexto()">Copiar</button>
-  <button id="btnReiniciar" onclick="reiniciar()">Reiniciar</button>
-</div>
+  <div class="btn-top">
+    <button id="btnTraducir" onclick="traducir()">Traducir</button>
+    <button id="btnCopiar" onclick="copiarTexto()">Copiar</button>
+    <button id="btnReiniciar" onclick="reiniciar()">Reiniciar</button>
+  </div>
 
-<p>Pega tu texto Avisos Meteorológico en español y se traducirá automáticamente al inglés avanzado.</p>
+  <p>Pega tu texto Avisos Meteorológico en español y se traducirá automáticamente al inglés avanzado.</p>
 
-<div class="container">
-  <textarea id="input" placeholder="Texto en español..."></textarea>
-  <textarea id="output" readonly placeholder="Texto traducido al inglés..."></textarea>
+  <div class="container">
+    <textarea id="input" placeholder="Texto en español..."></textarea>
+    <textarea id="output" readonly placeholder="Texto traducido al inglés..."></textarea>
+  </div>
+
+  <footer style="text-align:center;margin-top:40px;color:#cfd8dc;font-weight:600;">
+    <div style="width:100%;height:1px;background:linear-gradient(90deg,transparent,#00c6ff,transparent);margin-bottom:10px;"></div>
+    CREADO POR CABO 2º (MET.) FRANCISCO SALAS MUÑOZ
+  </footer>
 </div>
 
 <script>
-// 🔹 Login
-const USUARIO = "18563173";
-const CONTRASENA = "1234";
+// 🔹 LOGIN
+const USUARIO = '18563173';
+const CLAVE = '1234';
 
-function verificarLogin() {
-    const usuario = document.getElementById('usuarioInput').value;
-    const clave = document.getElementById('claveInput').value;
-
-    if(usuario === USUARIO && clave === CONTRASENA) {
-        document.getElementById('login').style.display = 'none';
-        document.getElementById('app').style.display = 'block';
-    } else {
-        document.getElementById('errorLogin').style.display = 'block';
-    }
+function verificarLogin(){
+  const u = document.getElementById('usuario').value.trim();
+  const c = document.getElementById('clave').value.trim();
+  if(u === USUARIO && c === CLAVE){
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('mainContent').style.display='block';
+  } else {
+    alert('Usuario o contraseña incorrectos ❌');
+  }
 }
 
-// 🔹 Aquí defines frases completas con traducción especial
+// 🔹 TRADUCTOR (todo tu código existente)
 const reglasEspeciales = {
-
   "AVISO DE":"SEVERE",
   "AVISO ESPECIAL DE CONDICIONES METEOROLOGICAS":"SPECIAL WARNING OF METEOROLOGICAL CONDITIONS",
   "EVOLUCION":"EVOLUTION",
@@ -239,88 +202,20 @@ const reglasEspeciales = {
   "SURESTE": "SOUTHWEST"
 };
 
-// 🔹 Diccionario general (traducciones palabra por palabra)
 const diccionario = {
- 'VALIDO':'VALID',
- 'DESDE':'FROM',
- 'HASTA':'TO',
- 'DEL SUR':'THE SOUTH',
- 'SITUACION SINOPTICA':'SYNOPTIC SITUATION',
- 'PRONOSTICO':'FORECAST', 
- 'MARGEN ANTICICLONICO':'ANTICYCLONIC EDGE', 
- 'ANTICICLONICO':'ANTICYCLONIC', 
- 'LIGERA INESTABILIDAD':'LIGHT UNSTABILITY', 
- 'INESTABLE':'UNSTABLE',
- 'POSTFRONTAL':'POSTFRONTAL',
- 'SISTEMA FRONTAL':'FRONTAL SYSTEM',
- 'PASO FRONTAL':'FRONTAL STEP',
- 'NUEVO PASO FRONTAL':'NEW FRONTAL STEP',
- 'INESTABILIDAD POSTFRONTAL':'POSTFRONTAL UNSTABILITY',
- 'DESPLAZAMIENTO GENERAL':'GENERAL DISPLACEMENT',
- 'ASOCIADO':'ASSOCIATED',
- 'UBICACION':'LOCATION',
- 'ANALISIS':'ANALYSIS',
- 'CUBIERTO':'OVERCAST',
- 'NUBLADO':'BROKEN',
- 'PARCIAL':'SCATTERED',
- 'DESPEJADO':'CLEAR',
- 'COBIERTO':'OVERCAST',
- 'NOBLADO':'BROKEN',
- 'PERCIAL':'SCATTERED',
- 'DASPEJDO':'CLEAR',
- 'VISIBILIDAD':'VIS',
- 'MUY MALA':'VERY POOR',
- 'MALA':'POOR',
- 'REGULAR':'AVERAGE',
- 'BUENA':'GOOD',
- 'VTO':'WIND',
- 'VIENTO':'WIND',
- 'NUDOS':'KT',
- 'NDS':'KT',
- 'ROLANDO':'ROTATING',
- 'RACHAS':'GUST',
- 'AUMENTANDO':'INCREASING',
- 'DISMINUYENDO':'DECREASING',
- 'VARIANDO':'BECOMING',
- 'OCASIONAL':'OCCASIONAL',
- 'OCASIONALES':'OCCASIONAL',
- 'CHUBASCOS':'SHOWERS',
- 'GRANIZOS':'HAIL',
- 'PRECIPITACIONES':'PRECIPITATION',
- 'LLOVIZNA':'DRIZZLE',
- 'NIEBLA':'FOG',
- 'NEBLINA':'MIST',
- 'NIEVE':'SNOW',
- 'AGUA NIEVE':'SLEET',
- 'MAR':'SEA',
- 'CALMA':'CALM',
- 'LLANA':'SMOOTH',
- 'RIZADA':'RIPPLED',
- 'MAREJADILLA':'SLIGHT',
- 'MAREJADA':'MODERATE',
- 'GRUESA':'ROUGH',
- 'MUY':'VERY',
- 'ALBOLADA':'HIGH',
- 'COMO':'AS',
- 'DE FONDO':'SWELL',
- 'EN':'IN',
- 'BAHIA':'BAY',
- 'HORA LOCAL':'LOCAL TIME', 
- 'EMITIDO':'ISSUE',
- 'Y':'AND',
- 'DE':'THE',
- 'ENE':'JAN',
- 'FEB':'FEB',
- 'MAR':'MAR',
- 'ABR':'APR',
- 'MAY':'MAY',
- 'JUN':'JUN',
- 'JUL':'JUL',
- 'AGO':'AUG',
- 'SEP':'SEP',
- 'OCT':'OCT',
- 'NOV':'NOV',
- 'DIC':'DEC',
+ 'VALIDO':'VALID','DESDE':'FROM','HASTA':'TO','DEL SUR':'THE SOUTH','SITUACION SINOPTICA':'SYNOPTIC SITUATION','PRONOSTICO':'FORECAST', 
+ 'MARGEN ANTICICLONICO':'ANTICYCLONIC EDGE','ANTICICLONICO':'ANTICYCLONIC','LIGERA INESTABILIDAD':'LIGHT UNSTABILITY','INESTABLE':'UNSTABLE',
+ 'POSTFRONTAL':'POSTFRONTAL','SISTEMA FRONTAL':'FRONTAL SYSTEM','PASO FRONTAL':'FRONTAL STEP','NUEVO PASO FRONTAL':'NEW FRONTAL STEP',
+ 'INESTABILIDAD POSTFRONTAL':'POSTFRONTAL UNSTABILITY','DESPLAZAMIENTO GENERAL':'GENERAL DISPLACEMENT','ASOCIADO':'ASSOCIATED',
+ 'UBICACION':'LOCATION','ANALISIS':'ANALYSIS','CUBIERTO':'OVERCAST','NUBLADO':'BROKEN','PARCIAL':'SCATTERED','DESPEJADO':'CLEAR',
+ 'COBIERTO':'OVERCAST','NOBLADO':'BROKEN','PERCIAL':'SCATTERED','DASPEJDO':'CLEAR','VISIBILIDAD':'VIS','MUY MALA':'VERY POOR',
+ 'MALA':'POOR','REGULAR':'AVERAGE','BUENA':'GOOD','VTO':'WIND','VIENTO':'WIND','NUDOS':'KT','NDS':'KT','ROLANDO':'ROTATING',
+ 'RACHAS':'GUST','AUMENTANDO':'INCREASING','DISMINUYENDO':'DECREASING','VARIANDO':'BECOMING','OCASIONAL':'OCCASIONAL',
+ 'OCASIONALES':'OCCASIONAL','CHUBASCOS':'SHOWERS','GRANIZOS':'HAIL','PRECIPITACIONES':'PRECIPITATION','LLOVIZNA':'DRIZZLE',
+ 'NIEBLA':'FOG','NEBLINA':'MIST','NIEVE':'SNOW','AGUA NIEVE':'SLEET','MAR':'SEA','CALMA':'CALM','LLANA':'SMOOTH','RIZADA':'RIPPLED',
+ 'MAREJADILLA':'SLIGHT','MAREJADA':'MODERATE','GRUESA':'ROUGH','MUY':'VERY','ALBOLADA':'HIGH','COMO':'AS','DE FONDO':'SWELL',
+ 'EN':'IN','BAHIA':'BAY','HORA LOCAL':'LOCAL TIME','EMITIDO':'ISSUE','Y':'AND','DE':'THE','ENE':'JAN','FEB':'FEB','MAR':'MAR',
+ 'ABR':'APR','MAY':'MAY','JUN':'JUN','JUL':'JUL','AGO':'AUG','SEP':'SEP','OCT':'OCT','NOV':'NOV','DIC':'DEC'
 };
 
 const dias = ['LUNES','MARTES','MIERCOLES','JUEVES','VIERNES','SABADO','DOMINGO'];
@@ -334,15 +229,7 @@ function aplicarReglasEspeciales(texto){
 }
 
 function translateDia(dia){
-  const diasEng = {
-    'LUNES':'MONDAY',
-    'MARTES':'TUESDAY',
-    'MIERCOLES':'WEDNESDAY',
-    'JUEVES':'THURSDAY',
-    'VIERNES':'FRIDAY',
-    'SABADO':'SATURDAY',
-    'DOMINGO':'SUNDAY'
-  };
+  const diasEng = {'LUNES':'MONDAY','MARTES':'TUESDAY','MIERCOLES':'WEDNESDAY','JUEVES':'THURSDAY','VIERNES':'FRIDAY','SABADO':'SATURDAY','DOMINGO':'SUNDAY'};
   return diasEng[dia.toUpperCase()] || dia;
 }
 
@@ -358,6 +245,7 @@ function traducir(){
     });
 
     texto = texto.replace(/\bA\.-/g, "@@PROTEGIDO_A@@");
+
     texto = aplicarReglasEspeciales(texto);
 
     Object.keys(diccionario).forEach(key=>{
@@ -393,11 +281,7 @@ function traducir(){
     document.getElementById('output').value = texto;
 }
 
-function reiniciar(){ 
-  document.getElementById('input').value=''; 
-  document.getElementById('output').value=''; 
-}
-
+function reiniciar(){ document.getElementById('input').value=''; document.getElementById('output').value=''; }
 function copiarTexto(){ 
   const output=document.getElementById('output'); 
   output.select(); 
@@ -408,11 +292,5 @@ function copiarTexto(){
 }
 </script>
 
-<footer style="text-align:center;margin-top:40px;color:#cfd8dc;font-weight:600;">
-<div style="width:100%;height:1px;background:linear-gradient(90deg,transparent,#00c6ff,transparent);margin-bottom:10px;"></div>
-CREADO POR CABO 2º (MET.) FRANCISCO SALAS MUÑOZ
-</footer>
-
-</div> <!-- app -->
 </body>
 </html>
