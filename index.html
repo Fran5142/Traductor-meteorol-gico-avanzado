@@ -10,7 +10,7 @@
   body {
     font-family: 'Inter', sans-serif;
     margin: 0;
-    padding: 20px;
+    padding: 0;
     background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
     color: #fff;
     cursor: default;
@@ -101,10 +101,54 @@
     .container { flex-direction:column; align-items:center; }
     textarea { width:90%; }
   }
+
+  /* 🔐 Login personalizado */
+  #login {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    height:100vh;
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color:#fff;
+  }
+
+  #login input {
+    padding:10px;
+    margin:5px;
+    border-radius:8px;
+    border:none;
+    width:200px;
+    text-align:center;
+  }
+
+  #login button {
+    padding:10px 20px;
+    margin-top:10px;
+    border:none;
+    border-radius:8px;
+    background:#00c6ff;
+    color:#000;
+    font-weight:bold;
+    cursor:pointer;
+  }
+
+  #errorLogin { color:#ff4b2b; margin-top:10px; display:none; }
 </style>
 </head>
 <body>
 
+<!-- 🔐 Pantalla de login -->
+<div id="login">
+  <h2>Iniciar Sesión</h2>
+  <input type="text" id="usuarioInput" placeholder="Usuario">
+  <input type="password" id="claveInput" placeholder="Contraseña">
+  <button onclick="verificarLogin()">Entrar</button>
+  <p id="errorLogin">Usuario o contraseña incorrectos</p>
+</div>
+
+<!-- 🔓 Contenido principal -->
+<div id="app" style="display:none;">
 <h1>TRADUCTOR METEOROLÓGICO AVANZADO</h1>
 
 <div class="btn-top">
@@ -121,10 +165,24 @@
 </div>
 
 <script>
+// 🔹 Login
+const USUARIO = "18563173";
+const CONTRASENA = "1234";
+
+function verificarLogin() {
+    const usuario = document.getElementById('usuarioInput').value;
+    const clave = document.getElementById('claveInput').value;
+
+    if(usuario === USUARIO && clave === CONTRASENA) {
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+    } else {
+        document.getElementById('errorLogin').style.display = 'block';
+    }
+}
+
 // 🔹 Aquí defines frases completas con traducción especial
 const reglasEspeciales = {
-
-  // 👉 Puedes seguir agregando: "TEXTO EN ESPAÑOL":"TRADUCCION EN INGLES"
 
   "AVISO DE":"SEVERE",
   "AVISO ESPECIAL DE CONDICIONES METEOROLOGICAS":"SPECIAL WARNING OF METEOROLOGICAL CONDITIONS",
@@ -145,20 +203,16 @@ const reglasEspeciales = {
   "GOLFO CORCOVADO":"CORCOVADO GULF",
   "ISLA DESERTORES":"DESERTORES ISLAND",
   "ISLAS SAN PEDRO":"SAN PEDRO ISLAND",
-
   "FARO SAN PEDRO":"SAN PEDRO LIGHTHOUSE",
   "FARO CORONA":"CORONA LIGHTHOUSE",
   "FARO RAPER":"RAPER LIGHTHOUSE",
   "FARO GUAFO":"GUAFO LIGHTHOUSE",
-
   "GOLFO CORONADOS":"CORONADOS GULF",
   "GOLFO DE PENAS":"PENAS GULF",
   "BOCA DEL GUAFO":"OCEANIC ACCESS OF GUAFO",
   "CANAL MORALEDA":"MORALEDA CHANNEL",
   "EN AGUAS INTERIORES":"IN INLAND WATERS",
-
   "AGUAS INTERIORES":"INLAND WATERS",
-
   "EN ACCESO OCEANICO":"IN OCEANIC ACCESS",
   "EN SECTORES ABIERTOS":"IN OPEN AREAS",
   "A.-":"A.-",
@@ -175,8 +229,6 @@ const reglasEspeciales = {
   "SECTOR AREA OCEANICA":"SECTOR OCEANIC AREA",
   "TRANSITORIAMENTE":"TEMPO",
   ", MAR":", SEA",
-
-
   "NORTE": "NORTH",
   "SUR": "SOUTH",
   "ESTE": "EAST",
@@ -185,14 +237,10 @@ const reglasEspeciales = {
   "SURESTE": "SOUTHEAST",
   "NORWESTE": "NORTHWEST",
   "SURESTE": "SOUTHWEST"
-
-
 };
 
 // 🔹 Diccionario general (traducciones palabra por palabra)
 const diccionario = {
-
-
  'VALIDO':'VALID',
  'DESDE':'FROM',
  'HASTA':'TO',
@@ -261,22 +309,18 @@ const diccionario = {
  'EMITIDO':'ISSUE',
  'Y':'AND',
  'DE':'THE',
-
-
-
-// MESES DE AÑO 
-  'ENE':'JAN',
-  'FEB':'FEB',
-  'MAR':'MAR',
-  'ABR':'APR',
-  'MAY':'MAY',
-  'JUN':'JUN',
-  'JUL':'JUL',
-  'AGO':'AUG',
-  'SEP':'SEP',
-  'OCT':'OCT',
-  'NOV':'NOV',
-  'DIC':'DEC',
+ 'ENE':'JAN',
+ 'FEB':'FEB',
+ 'MAR':'MAR',
+ 'ABR':'APR',
+ 'MAY':'MAY',
+ 'JUN':'JUN',
+ 'JUL':'JUL',
+ 'AGO':'AUG',
+ 'SEP':'SEP',
+ 'OCT':'OCT',
+ 'NOV':'NOV',
+ 'DIC':'DEC',
 };
 
 const dias = ['LUNES','MARTES','MIERCOLES','JUEVES','VIERNES','SABADO','DOMINGO'];
@@ -306,7 +350,6 @@ function traducir(){
     let texto = document.getElementById('input').value.toUpperCase();
     texto = texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-    // 🔹 Proteger abreviaturas con '/'
     const regexCompuestas = /\b(N|S|E|W|NE|NW|SE|SW)\/(N|S|E|W|NE|NW|SE|SW)\b/gi;
     const protecciones = [];
     texto = texto.replace(regexCompuestas, match=>{
@@ -314,36 +357,27 @@ function traducir(){
         return `@@PROTEGIDO${protecciones.length-1}@@`;
     });
 
-    // 🔹 Proteger "A.-" para que no se traduzca como TO
     texto = texto.replace(/\bA\.-/g, "@@PROTEGIDO_A@@");
-
-    // Aplicar reglas especiales
     texto = aplicarReglasEspeciales(texto);
 
-    // Diccionario general
     Object.keys(diccionario).forEach(key=>{
         texto = texto.replace(new RegExp("\\b"+key+"\\b","gi"), diccionario[key]);
     });
 
-    // Reemplazos simples
     Object.keys(reemplazos).forEach(abrev=>{
         texto = texto.replace(new RegExp(`\\b${abrev}\\b`, 'g'), reemplazos[abrev]);
     });
 
-    // Restaurar abreviaturas compuestas
     protecciones.forEach((val,i)=>{
         texto = texto.replace(`@@PROTEGIDO${i}@@`, val.toUpperCase());
     });
 
-    // 🔹 Restaurar "A.-"
     texto = texto.replace(/@@PROTEGIDO_A@@/g, "A.-");
 
-    // Traducir días con número
     dias.forEach(dia=>{
         texto = texto.replace(new RegExp(`\\b${dia}\\b\\s*(\\d{1,2})`,'gi'), (m,n)=>`${translateDia(dia)} ${n}.`);
     });
 
-    // Limpieza de espacios y signos
     texto = texto.replace(/ {2,}/g,' ')
                  .replace(/ \//g,'/')
                  .replace(/\/ /g,'/')
@@ -379,5 +413,6 @@ function copiarTexto(){
 CREADO POR CABO 2º (MET.) FRANCISCO SALAS MUÑOZ
 </footer>
 
+</div> <!-- app -->
 </body>
 </html>
