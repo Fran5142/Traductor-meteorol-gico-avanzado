@@ -98,16 +98,8 @@
 </head>
 <body>
 
-<!-- LOGIN -->
-<div id="loginScreen">
-  <h2>Ingreso Traductor Meteorológico</h2>
-  <input type="text" id="usuario" placeholder="Usuario">
-  <input type="password" id="clave" placeholder="Contraseña">
-  <button onclick="verificarLogin()">Ingresar</button>
-</div>
-
 <!-- CONTENIDO PRINCIPAL -->
-<div id="mainContent" style="display:none;">
+<div id="mainContent">
   <h1>TRADUCTOR METEOROLÓGICO AVANZADO</h1>
 
   <div class="btn-top">
@@ -130,20 +122,7 @@
 </div>
 
 <script>
-// 🔹 LOGIN
-const USUARIO = '18563173';
-const CLAVE = '1234';
 
-function verificarLogin(){
-  const u = document.getElementById('usuario').value.trim();
-  const c = document.getElementById('clave').value.trim();
-  if(u === USUARIO && c === CLAVE){
-    document.getElementById('loginScreen').style.display='none';
-    document.getElementById('mainContent').style.display='block';
-  } else {
-    alert('Usuario o contraseña incorrectos ❌');
-  }
-}
 
 // 🔹 TRADUCTOR (todo tu código existente)
 const reglasEspeciales = {
