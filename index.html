@@ -11,60 +11,54 @@
     font-family: 'Inter', sans-serif;
     margin: 0;
     padding: 20px;
-    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    /* Fondo azul marino profesional */
+    background: linear-gradient(135deg, #0a192f, #112240, #0a192f);
     color: #fff;
     cursor: default;
+    min-height: 100vh;
   }
 
-  /* PANTALLA DE LOGIN */
-  #loginScreen {
-    position: fixed;
-    top:0; left:0; width:100%; height:100%;
-    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-    display:flex; flex-direction:column; justify-content:center; align-items:center;
-    z-index:1000;
+  h1 { 
+    text-align:center; 
+    margin-bottom:10px; 
+    font-weight:600; 
+    font-size:2.2em; 
+    text-shadow:0 2px 6px rgba(0,0,0,0.4); 
   }
 
-  #loginScreen h2 {
-    margin-bottom:20px;
-    font-size:2em;
-    text-shadow:0 2px 6px rgba(0,0,0,0.4);
+  p { 
+    text-align:center; 
+    margin-bottom:30px; 
+    font-size:1em; 
+    color:#cfd8dc; 
   }
 
-  #loginScreen input {
-    padding:12px 20px;
-    margin:8px 0;
-    border:none;
-    border-radius:12px;
-    width:250px;
-    font-size:1em;
-    outline:none;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  .btn-top { 
+    display:flex; 
+    justify-content:center; 
+    flex-wrap:wrap; 
+    gap:12px; 
+    margin-bottom:20px; 
   }
 
-  #loginScreen input:focus {
-    transform: translateY(-2px);
-    box-shadow:0 6px 18px rgba(0,0,0,0.2);
+  button { 
+    padding:12px 28px; 
+    border:none; 
+    border-radius:12px; 
+    color:#fff; 
+    font-weight:600; 
+    font-size:1em; 
+    background-size:200% 200%; 
+    transition: all 0.3s ease; 
+    box-shadow:0 4px 12px rgba(0,0,0,0.2); 
+    position: relative; 
+    overflow: hidden; 
+    cursor: pointer; 
   }
 
-  #loginScreen button {
-    padding:12px 28px;
-    border:none;
-    border-radius:12px;
-    color:#fff;
-    font-weight:600;
-    font-size:1em;
-    background-size:200% 200%;
-    margin-top:12px;
-    cursor:pointer;
-    box-shadow:0 4px 12px rgba(0,0,0,0.2);
-    transition: all 0.3s ease;
-    background-image: linear-gradient(270deg,#0072ff,#00c6ff,#0072ff);
-    animation: gradiente 3s ease infinite;
-  }
-
-  #loginScreen button:hover { transform: translateY(-3px); box-shadow:0 8px 20px rgba(0,0,0,0.3); }
-  #loginScreen button:active { transform: translateY(0px); box-shadow:0 4px 12px rgba(0,0,0,0.2); }
+  #btnTraducir { background-image: linear-gradient(270deg,#0072ff,#00c6ff,#0072ff); animation: gradiente 3s ease infinite; }
+  #btnReiniciar { background-image: linear-gradient(270deg,#ff416c,#ff4b2b,#ff416c); animation: gradiente 3s ease infinite; }
+  #btnCopiar { background-image: linear-gradient(270deg,#ffa600,#ff6f00,#ffa600); animation: gradiente 3s ease infinite; }
 
   @keyframes gradiente {
     0% { background-position:0% 50%; }
@@ -72,33 +66,56 @@
     100% { background-position:0% 50%; }
   }
 
-  /* Resto del estilo original */
-  h1 { text-align:center; margin-bottom:10px; font-weight:600; font-size:2.2em; text-shadow:0 2px 6px rgba(0,0,0,0.4); }
-  p { text-align:center; margin-bottom:30px; font-size:1em; color:#cfd8dc; }
-
-  .btn-top { display:flex; justify-content:center; flex-wrap:wrap; gap:12px; margin-bottom:20px; }
-  button { padding:12px 28px; border:none; border-radius:12px; color:#fff; font-weight:600; font-size:1em; background-size:200% 200%; transition: all 0.3s ease; box-shadow:0 4px 12px rgba(0,0,0,0.2); position: relative; overflow: hidden; cursor: pointer; }
-  #btnTraducir { background-image: linear-gradient(270deg,#0072ff,#00c6ff,#0072ff); animation: gradiente 3s ease infinite; }
-  #btnReiniciar { background-image: linear-gradient(270deg,#ff416c,#ff4b2b,#ff416c); animation: gradiente 3s ease infinite; }
-  #btnCopiar { background-image: linear-gradient(270deg,#ffa600,#ff6f00,#ffa600); animation: gradiente 3s ease infinite; }
-
   button:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
-  button:active { transform: translateY(0px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
 
-  .container { display:flex; flex-wrap:wrap; gap:20px; justify-content:center; }
+  .container { 
+    display:flex; 
+    flex-wrap:wrap; 
+    gap:20px; 
+    justify-content:center; 
+  }
 
-  textarea { width:45%; min-width:300px; height:600px; padding:15px; font-size:16px; border-radius:12px; border:none; resize:none; color:#333; background-color:#f0f4f8; box-shadow:0 4px 12px rgba(0,0,0,0.15); transition: transform 0.2s ease, box-shadow 0.2s ease; cursor:text; }
+  /* CONFIGURACIÓN DE LOS CUADROS EN BLANCO */
+  textarea { 
+    width:45%; 
+    min-width:300px; 
+    height:600px; 
+    padding:15px; 
+    font-size:16px; 
+    border-radius:12px; 
+    border: 2px solid #233554; 
+    resize:none; 
+    color:#000; /* Texto en negro */
+    background-color:#ffffff; /* Fondo blanco puro */
+    box-shadow:0 4px 12px rgba(0,0,0,0.3); 
+    transition: transform 0.2s ease, box-shadow 0.2s ease; 
+    cursor:text; 
+  }
 
-  textarea:focus { outline:none; transform:translateY(-2px); box-shadow:0 6px 18px rgba(0,0,0,0.2); }
+  textarea:focus { 
+    outline:none; 
+    transform:translateY(-2px); 
+    box-shadow:0 6px 18px rgba(0,0,0,0.4); 
+    border-color: #00c6ff;
+  }
 
-  footer { text-align:center; margin-top:40px; padding:15px 0; font-size:0.9em; color:#cfd8dc; letter-spacing:0.5px; display:flex; flex-direction:column; align-items:center; gap:6px; }
+  footer { 
+    text-align:center; 
+    margin-top:40px; 
+    padding:15px 0; 
+    font-size:0.9em; 
+    color:#cfd8dc; 
+    letter-spacing:0.5px; 
+  }
 
-  @media(max-width:900px){ .container { flex-direction:column; align-items:center; } textarea { width:90%; } }
+  @media(max-width:900px){ 
+    .container { flex-direction:column; align-items:center; } 
+    textarea { width:90%; } 
+  }
 </style>
 </head>
 <body>
 
-<!-- CONTENIDO PRINCIPAL -->
 <div id="mainContent">
   <h1>TRADUCTOR METEOROLÓGICO AVANZADO</h1>
 
@@ -111,8 +128,8 @@
   <p>Pega tu texto Avisos Meteorológico en español y se traducirá automáticamente al inglés avanzado.</p>
 
   <div class="container">
-    <textarea id="input" placeholder="Texto en español..."></textarea>
-    <textarea id="output" readonly placeholder="Texto traducido al inglés..."></textarea>
+    <textarea id="input" placeholder="Pegue aquí el texto en español..."></textarea>
+    <textarea id="output" readonly placeholder="La traducción aparecerá aquí..."></textarea>
   </div>
 
   <footer style="text-align:center;margin-top:40px;color:#cfd8dc;font-weight:600;">
@@ -122,9 +139,7 @@
 </div>
 
 <script>
-
-
-// 🔹 TRADUCTOR (todo tu código existente)
+// TU LÓGICA ORIGINAL SIN CAMBIOS
 const reglasEspeciales = {
   "AVISO DE":"SEVERE",
   "AVISO ESPECIAL DE CONDICIONES METEOROLOGICAS":"SPECIAL WARNING OF METEOROLOGICAL CONDITIONS",
@@ -224,7 +239,6 @@ function traducir(){
     });
 
     texto = texto.replace(/\bA\.-/g, "@@PROTEGIDO_A@@");
-
     texto = aplicarReglasEspeciales(texto);
 
     Object.keys(diccionario).forEach(key=>{
@@ -266,10 +280,8 @@ function copiarTexto(){
   output.select(); 
   output.setSelectionRange(0,99999); 
   navigator.clipboard.writeText(output.value)
-
 }
 </script>
 
 </body>
 </html>
-
