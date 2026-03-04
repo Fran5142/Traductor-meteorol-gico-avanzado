@@ -11,7 +11,6 @@
     font-family: 'Inter', sans-serif;
     margin: 0;
     padding: 20px;
-    /* Fondo azul marino profesional */
     background: linear-gradient(135deg, #0a192f, #112240, #0a192f);
     color: #fff;
     cursor: default;
@@ -75,7 +74,6 @@
     justify-content:center; 
   }
 
-  /* CONFIGURACIÓN DE LOS CUADROS EN BLANCO */
   textarea { 
     width:45%; 
     min-width:300px; 
@@ -85,8 +83,8 @@
     border-radius:12px; 
     border: 2px solid #233554; 
     resize:none; 
-    color:#000; /* Texto en negro */
-    background-color:#ffffff; /* Fondo blanco puro */
+    color:#000; 
+    background-color:#ffffff; 
     box-shadow:0 4px 12px rgba(0,0,0,0.3); 
     transition: transform 0.2s ease, box-shadow 0.2s ease; 
     cursor:text; 
@@ -139,7 +137,6 @@
 </div>
 
 <script>
-// TU LÓGICA ORIGINAL SIN CAMBIOS
 const reglasEspeciales = {
   "AVISO DE":"SEVERE",
   "AVISO ESPECIAL DE CONDICIONES METEOROLOGICAS":"SPECIAL WARNING OF METEOROLOGICAL CONDITIONS",
@@ -175,11 +172,12 @@ const reglasEspeciales = {
   "A.-":"A.-",
   "LOS EVENTUALES CAMBIOS A LAS CONDICIONES PREVISTAS SE INFORMARAN OPORTUNAMENTE":"THE POSSIBLE CHANGES TO THE CONDITIONS FORECASTED WILL BE REPORTED TIMELY",
   "POR EL CENTRO METEOROLOGICO MARITIMO DE PUERTO MONTT":"BY THE MARITIME METEOROLOGICAL CENTER OF PUERTO MONTT",
+  "HORA LOCAL POR EL CENTRO ZONAL DE METEOROLOGIA MARINA DE PUERTO MONTT":"LOCAL TIME BY THE ZONAL CENTER FOR MARINE METEOROLOGY OF PUERTO MONTT",
   "CON DESPLAZAMIENTO GENERAL":"WITH GENERAL DISPLACEMENT",
   "CENTRO DE BAJA PRESION DE": "LOW PRESSURE OF",
   "CENTRO DE ALTA PRESION DE": "HIGH PRESSURE OF",
   "ALBOLADA ALTA":"VERY HIGH",
-  "A LAS":"TO THE",
+  "A LAS":" ",
   "A":"TO",
   "SECTOR OCEANICO":"OCEANIC AREA",
   "EN AREA OCEANICA":"IN OCEANIC AREA",
@@ -208,7 +206,7 @@ const diccionario = {
  'OCASIONALES':'OCCASIONAL','CHUBASCOS':'SHOWERS','GRANIZOS':'HAIL','PRECIPITACIONES':'PRECIPITATION','LLOVIZNA':'DRIZZLE',
  'NIEBLA':'FOG','NEBLINA':'MIST','NIEVE':'SNOW','AGUA NIEVE':'SLEET','MAR':'SEA','CALMA':'CALM','LLANA':'SMOOTH','RIZADA':'RIPPLED',
  'MAREJADILLA':'SLIGHT','MAREJADA':'MODERATE','GRUESA':'ROUGH','MUY':'VERY','ALBOLADA':'HIGH','COMO':'AS','DE FONDO':'SWELL',
- 'EN':'IN','BAHIA':'BAY','HORA LOCAL':'LOCAL TIME','EMITIDO':'ISSUE','Y':'AND','DE':'THE','ENE':'JAN','FEB':'FEB','MAR':'MAR',
+ 'EN':'IN','BAHIA':'BAY','HORA LOCAL':'LOCAL TIME','EMITIDO':'ISSUED','Y':'AND','DE':'THE','ENE':'JAN','FEB':'FEB','MAR':'MAR',
  'ABR':'APR','MAY':'MAY','JUN':'JUN','JUL':'JUL','AGO':'AUG','SEP':'SEP','OCT':'OCT','NOV':'NOV','DIC':'DEC'
 };
 
